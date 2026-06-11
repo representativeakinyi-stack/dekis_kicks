@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dekis_Kicks</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Welcome to Dekis_Kicks 👟</h1>
+    <p class="tagline">Step Into Style With Dekis_Kicks</p>
+</header>
+
+<!-- CART BAR -->
+<div id="cartBar">
+    🛒 Cart Items: <span id="cart-count">0</span>
+</div>
+
+<!-- SEARCH -->
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search shoes... Nike, Puma, Jordan">
+    <button onclick="filterShoes()">Search</button>
+</div>
+
+<!-- PRODUCTS FIRST -->
+<h2 class="section-title">👟 Our Shoes</h2>
+<div id="products"></div>
+
+<!-- CART -->
+<h2 class="section-title">🛒 Your Cart</h2>
+<div id="cart-box"></div>
+
+<button class="checkout-btn" onclick="checkout()">
+    Checkout on WhatsApp 💳
+</button>
+
+<!-- CUSTOMER DETAILS -->
+<div class="customer-form">
+
+    <h2>Customer Details</h2>
+
+    <input type="text" id="customerName" placeholder="Enter Your Name">
+    <input type="text" id="customerPhone" placeholder="Enter Phone Number">
+    <input type="text" id="customerCounty" placeholder="County (e.g. Nairobi)">
+    <input type="text" id="customerArea" placeholder="Town / Area">
+
+    <textarea id="deliveryNotes" placeholder="Delivery Notes"></textarea>
+
+</div>
+
+<!-- PAYMENT -->
+<div class="payment-section">
+
+    <h2>📱 Pay with M-Pesa</h2>
+
+    <div class="mpesa-number">
+        0794864204
+    </div>
+
+    <p>After payment click below:</p>
+
+    <button class="mpesa-btn" onclick="paidNow()">
+        ✅ I've Paid
+    </button>
+
+</div>
+
+<!-- SOCIAL MEDIA -->
+<section class="socials-vertical">
+
+    <h3>Follow Us</h3>
+
+    <a href="https://instagram.com/dekis_kicks" target="_blank">📸 Instagram</a>
+    <a href="https://tiktok.com/@dekis_kicks" target="_blank">🎵 TikTok</a>
+    <a href="https://facebook.com/dekis_kicks" target="_blank">📘 Facebook</a>
+    <a href="https://wa.me/254794864204" target="_blank">💬 WhatsApp</a>
+
+    <p>© 2026 Dekis_Kicks</p>
+
+</section>
+
+<script src="script.js"></script>
+
+</body>
+</html>
