@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dekis_Kicks Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    margin:0;
+    background:#f4f4f4;
+}
+
+header{
+    background:black;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+header h1{
+    margin:0;
+}
+
+.logout-btn{
+    background:red;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    margin-top:15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.container{
+    padding:20px;
+}
+
+.finance{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.box{
+    background:#111;
+    color:white;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.box h3{
+    font-size:32px;
+    margin:0;
+}
+
+.box p{
+    margin-top:10px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card h3{
+    margin-top:0;
+}
+
+.card p{
+    margin:8px 0;
+}
+
+.loading{
+    text-align:center;
+    font-size:18px;
+    padding:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+```
+<h1>📊 Dekis_Kicks Admin Dashboard</h1>
+
+<button
+    class="logout-btn"
+    onclick="logout()">
+    Logout
+</button>
+```
+
+</header>
+
+<div class="container">
+
+```
+<h2>💰 Finance Overview</h2>
+
+<div class="finance">
+
+    <div class="box">
+        <h3 id="totalSales">0</h3>
+        <p>Total Sales (KSh)</p>
+    </div>
+
+    <div class="box">
+        <h3 id="totalOrders">0</h3>
+        <p>Total Orders</p>
+    </div>
+
+</div>
+
+<h2>📦 Customer Orders</h2>
+
+<div id="orders" class="loading">
+    Loading orders...
+</div>
+```
+
+</div>
+
+<script>
+
+// =====================
+// PROTECT ADMIN PAGE
+// =====================
+
+if(!localStorage.getItem("adminUser")){
+    window.location.href = "login.html";
+}
+
+// =====================
+// SUPABASE CONNECTION
+// =====================
+
+const supabaseUrl =
+"https://cbvlvvkvxrimyptxhjqj.supabase.co";
+
+const supabaseKey =
+"sb_publishable_ER1sZcCbfjSRW9FZUeeT5w_PWGpdnW1";
+
+const client =
+supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+);
+
+// =====================
+// LOGOUT
+// =====================
+
+function logout(){
+
+    localStorage.removeItem(
+        "adminUser"
+    );
+
+    window.location.href =
+    "login.html";
+}
+
+// =====================
+// LOAD ORDERS
+// =====================
+
+async function loadOrders(){
+
+    const container =
+        document.getElementById("orders");
+
+    const { data, error } =
+        await client
+        .from("orders")
+        .select("*")
+        .order("id", {
+            ascending:false
+        });
+
+    if(error){
+
+        console.log(error);
+
+        container.innerHTML =
+            "Failed to load orders";
+
+        return;
+    }
+
+    let totalSales = 0;
+
+    document.getElementById(
+        "totalOrders"
+    ).innerText = data.length;
+
+    container.innerHTML = "";
+
+    if(data.length === 0){
+
+        container.innerHTML =
+            "<p>No customer orders yet.</p>";
+
+        return;
+    }
+
+    data.forEach(order => {
+
+        totalSales += Number(
+            order.total || 0
+        );
+
+        container.innerHTML += `
+
+        <div class="card">
+
+            <h3>
+                👤 ${order.customer_name || "Customer"}
+            </h3>
+
+            <p>
+                📞
+                ${order.phone || "No phone"}
+            </p>
+
+            <p>
+                📍
+                ${order.county || ""}
+                ${order.area || ""}
+            </p>
+
+            <p>
+                🛒
+                ${order.items || "No items"}
+            </p>
+
+            <p>
+                📝
+                ${order.notes || "No notes"}
+            </p>
+
+            <h3>
+                💰 KSh
+                ${order.total || 0}
+            </h3>
+
+        </div>
+
+        `;
+    });
+
+    document.getElementById(
+        "totalSales"
+    ).innerText = totalSales;
+}
+
+// =====================
+// START APP
+// =====================
+
+loadOrders();
+
+</script>
+
+</body>
+</html>
