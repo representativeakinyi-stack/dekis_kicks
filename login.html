@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dekis_Kicks Admin Login</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f4f4;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.login-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    width:320px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    background:black;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+#msg{
+    color:red;
+    margin-top:10px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="login-box">
+
+<h2>Admin Login</h2>
+
+<input
+type="text"
+id="username"
+placeholder="Username">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button onclick="login()">
+Login
+</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script>
+
+const supabaseUrl =
+"https://cbvlvvkvxrimyptxhjqj.supabase.co";
+
+const supabaseKey =
+"sb_publishable_ER1sZcCbfjSRW9FZUeeT5w_PWGpdnW1";
+
+const client =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+async function login(){
+
+    const username =
+    document.getElementById("username").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    const { data, error } =
+    await client
+    .from("admins")
+    .select("*")
+    .eq("username", username)
+    .eq("password", password)
+    .single();
+
+    if(error || !data){
+
+        document.getElementById("msg")
+        .innerText =
+        "Invalid username or password";
+
+        return;
+    }
+
+    localStorage.setItem(
+        "adminUser",
+        username
+    );
+
+    window.location.href =
+    "admin.html";
+}
+
+</script>
+
+</body>
+</html>
